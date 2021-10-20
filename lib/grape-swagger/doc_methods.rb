@@ -53,6 +53,8 @@ module GrapeSwagger
       paths, definitions   = endpoint.path_and_definition_objects(combi_routes, options)
       tags                 = tags_from(paths, options)
 
+      paths, definitions = expand_odd_references(paths, definitions) if options[:expand_odd_references]
+
       output[:tags]        = tags unless tags.empty? || paths.blank?
       output[:paths]       = paths unless paths.blank?
       output[:definitions] = definitions unless definitions.blank?
@@ -136,6 +138,40 @@ module GrapeSwagger
       return unless formatter
 
       FORMATTER_METHOD.each { |method| send(method, formatter) }
+    end
+
+    class << self
+      private
+
+      def expand_odd_references(paths, definitions)
+        # 展开 paths
+        paths = expand_odd_references_helper(paths, definitions)
+
+        # 删除 defiitions 多余的部分
+        definitions = definitions.reject { |key| key.start_with?('#') || /[[:lower:]]/.match?(key[0]) }
+
+        [paths, definitions]
+      end
+
+      def expand_odd_references_helper(documentation, definitions)
+        case documentation
+        when Hash
+          if documentation.key?('$ref') && documentation['$ref'] =~ %r{^#/definitions/(.+)$}
+            reference_name = Regexp.last_match(1)
+            return documentation if /[[:upper:]]/.match(reference_name[0])
+
+            definitions[reference_name]
+          else
+            documentation.transform_values do |value|
+              expand_odd_references_helper(value, definitions)
+            end
+          end
+        when Array
+          documentation.map { |value| expand_odd_references_helper(value, definitions) }
+        else
+          documentation
+        end
+      end
     end
   end
 end
