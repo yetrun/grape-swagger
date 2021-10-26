@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-# require 'grape_version'
 
 describe 'Default API' do
   context 'with no additional options' do
@@ -31,6 +30,7 @@ describe 'Default API' do
         'paths' => {
           '/something' => {
             'get' => {
+              'summary' => 'This gets something.',
               'description' => 'This gets something.',
               'produces' => ['application/json'],
               'tags' => ['something'],
@@ -77,6 +77,7 @@ describe 'Default API' do
                             'paths' => {
                               '/something' => {
                                 'get' => {
+                                  'summary' => 'This gets something.',
                                   'description' => 'This gets something.',
                                   'produces' => ['application/json'],
                                   'tags' => ['something'],

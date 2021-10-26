@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'response with headers' do
-  # include_context "#{MODEL_PARSER} swagger header"
+  include_context "#{MODEL_PARSER} swagger example"
 
   before :all do
     module TheApi
@@ -91,6 +91,7 @@ describe 'response with headers' do
 
     specify do
       expect(subject['paths']['/response_headers']['get']).to eql(
+        'summary' => 'This returns headers',
         'description' => 'This returns headers',
         'produces' => ['application/json'],
         'responses' => {
@@ -121,6 +122,7 @@ describe 'response with headers' do
 
     specify do
       expect(subject['paths']['/no_content_response_headers']['delete']).to eql(
+        'summary' => 'A 204 can have headers too',
         'description' => 'A 204 can have headers too',
         'produces' => ['application/json'],
         'responses' => {
@@ -151,6 +153,7 @@ describe 'response with headers' do
 
     specify do
       expect(subject['paths']['/file_response_headers']['get']).to eql(
+        'summary' => 'A file can have headers too',
         'description' => 'A file can have headers too',
         'produces' => ['application/json'],
         'responses' => {
@@ -181,6 +184,7 @@ describe 'response with headers' do
 
     specify do
       expect(subject['paths']['/response_failure_headers']['get']).to eql(
+        'summary' => 'This syntax also returns headers',
         'description' => 'This syntax also returns headers',
         'produces' => ['application/json'],
         'responses' => {
@@ -202,6 +206,7 @@ describe 'response with headers' do
 
     specify do
       expect(subject['paths']['/response_no_headers']['get']).to eql(
+        'summary' => 'This does not return headers',
         'description' => 'This does not return headers',
         'produces' => ['application/json'],
         'responses' => {

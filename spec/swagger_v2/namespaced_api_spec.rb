@@ -7,7 +7,8 @@ describe 'namespace' do
     def app
       Class.new(Grape::API) do
         namespace :aspace do
-          get '/', desc: 'Description for aspace'
+          desc 'Description for aspace'
+          get '/'
         end
         add_swagger_documentation format: :json
       end
@@ -27,7 +28,8 @@ describe 'namespace' do
     def app
       Class.new(Grape::API) do
         namespace :camelCases do
-          get '/', desc: 'Look! An endpoint.'
+          desc 'Look! An endpoint.'
+          get '/'
         end
         add_swagger_documentation format: :json
       end
@@ -47,7 +49,8 @@ describe 'namespace' do
     def app
       namespaced_api = Class.new(Grape::API) do
         namespace :bspace do
-          get '/', desc: 'Description for aspace'
+          desc 'Description for aspace'
+          get '/'
         end
       end
 
@@ -71,7 +74,8 @@ describe 'namespace' do
     def app
       namespaced_api = Class.new(Grape::API) do
         namespace :bspace do
-          get '/', desc: 'Description for aspace'
+          desc 'Description for aspace'
+          get '/'
         end
       end
 
@@ -95,7 +99,8 @@ describe 'namespace' do
     def app
       inner_namespaced_api = Class.new(Grape::API) do
         namespace :bspace do
-          get '/', desc: 'Description for aspace'
+          desc 'Description for aspace'
+          get '/'
         end
       end
 

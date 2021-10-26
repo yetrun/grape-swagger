@@ -34,6 +34,7 @@ describe 'response' do
 
     specify do
       expect(subject['paths']['/']['get']).to eql(
+        'summary' => 'This returns something',
         'description' => 'This returns something',
         'produces' => ['application/json'],
         'responses' => {
@@ -58,6 +59,7 @@ describe 'response' do
 
     specify do
       expect(subject['paths']['/']['get']).to eql(
+        'summary' => 'This returns something',
         'description' => 'This returns something',
         'produces' => ['application/json'],
         'responses' => {
@@ -82,6 +84,7 @@ describe 'response' do
 
     specify do
       expect(subject['paths']['/']['get']).to eql(
+        'summary' => 'This returns something',
         'description' => 'This returns something',
         'produces' => ['application/json'],
         'responses' => {
@@ -106,6 +109,7 @@ describe 'response' do
 
     specify do
       expect(subject['paths']['/']['post']).to eql(
+        'summary' => 'This returns something',
         'description' => 'This returns something',
         'produces' => ['application/json'],
         'consumes' => ['application/json'],
@@ -139,6 +143,7 @@ describe 'response' do
 
     specify do
       expect(subject['paths']['/']['get']).to eql(
+        'summary' => 'This returns something',
         'description' => 'This returns something',
         'produces' => ['application/json'],
         'responses' => {

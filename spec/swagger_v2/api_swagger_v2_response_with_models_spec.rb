@@ -10,8 +10,9 @@ describe 'response' do
       class ResponseApiModels < Grape::API
         format :json
 
-        desc 'This returns something',
-             success: [{ code: 200 }],
+        desc nil,
+             detail: 'This returns something',
+             success: [{ code: 200, message: 'This returns something' }],
              failure: [
                { code: 400, message: 'NotFound', model: '' },
                { code: 404, message: 'BadRequest', model: Entities::ApiError }

@@ -137,12 +137,9 @@ module Grape
       route.options[:security] if route.options.key?(:security)
     end
 
+    # 取 route.description 或 options[:summary]
     def summary_object(route)
-      summary = route.options[:desc] if route.options.key?(:desc)
-      summary = route.description if route.description.present? && route.options.key?(:detail)
-      summary = route.options[:summary] if route.options.key?(:summary)
-
-      summary
+      route.options[:summary] || route.description || route.options[:desc]
     end
 
     def description_object(route)
