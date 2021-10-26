@@ -102,8 +102,7 @@ describe 'referenceEntity' do
             '$ref' => '#/definitions/SomethingCustom',
             'description' => 'Something interesting.'
           }
-        },
-        'description' => 'KindCustom model'
+        }
       )
     end
   end
@@ -121,8 +120,7 @@ describe 'referenceEntity' do
         'properties' => {
           'title' => { 'type' => 'string', 'description' => 'Title of the parent.' },
           'child' => { 'type' => 'string', 'description' => 'Child property.' }
-        },
-        'description' => 'MyAPI::Child model'
+        }
       )
     end
   end

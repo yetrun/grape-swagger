@@ -128,7 +128,6 @@ RSpec.shared_context 'mock swagger example' do
             'description' => "it's a mock"
           }
         },
-        'description' => 'ApiError model'
       },
       'UseItemResponseAsType' => {
         'type' => 'object',
@@ -138,7 +137,6 @@ RSpec.shared_context 'mock swagger example' do
             'description' => "it's a mock"
           }
         },
-        'description' => 'UseItemResponseAsType model'
       }
     }
   end
@@ -153,7 +151,6 @@ RSpec.shared_context 'mock swagger example' do
             'description' => "it's a mock"
           }
         },
-        'description' => 'UseResponse model'
       },
       'ApiError' => {
         'type' => 'object',
@@ -163,7 +160,6 @@ RSpec.shared_context 'mock swagger example' do
             'description' => "it's a mock"
           }
         },
-        'description' => 'ApiError model'
       }
     }
   end
@@ -178,7 +174,6 @@ RSpec.shared_context 'mock swagger example' do
             'description' => "it's a mock"
           }
         },
-        'description' => 'ApiError model'
       }
     }
   end
@@ -320,7 +315,6 @@ RSpec.shared_context 'mock swagger example' do
               'description' => "it's a mock"
             }
           },
-          'description' => 'QueryInput model'
         },
         'ApiError' => {
           'type' => 'object',
@@ -330,7 +324,6 @@ RSpec.shared_context 'mock swagger example' do
               'description' => "it's a mock"
             }
           },
-          'description' => 'ApiError model'
         },
         'Something' => {
           'type' => 'object',
@@ -340,7 +333,6 @@ RSpec.shared_context 'mock swagger example' do
               'description' => "it's a mock"
             }
           },
-          'description' => 'Something model'
         }
       }
     }

@@ -216,7 +216,6 @@ module Grape
         next unless @definitions[response_model]
         next if response_model.start_with?('Swagger_doc')
 
-        @definitions[response_model][:description] ||= "#{response_model} model"
         build_memo_schema(memo, route, value, response_model, options)
         memo[value[:code]][:examples] = value[:examples] if value[:examples]
       end
