@@ -73,27 +73,70 @@ describe 'response' do
   end
 
   describe 'uses status DSL as response object' do
-    before do
-      api.desc 'This returns something'
-      api.status 200, Entities::UseResponse
-      api.status 400, 'NotFound', Entities::ApiError
-      api.get do
-        { 'declared_params' => declared(params) }
+    describe '使用 status 宏定义返回状态码和实体' do
+      before do
+        api.desc 'This returns something'
+        api.status 200, Entities::UseResponse
+        api.status 400, 'NotFound', Entities::ApiError
+        api.get do
+          { 'declared_params' => declared(params) }
+        end
+      end
+
+      specify do
+        expect(subject['paths']['/']['get']).to eql(
+          'summary' => 'This returns something',
+          'description' => 'This returns something',
+          'produces' => ['application/json'],
+          'responses' => {
+            '200' => { 'description' => '', 'schema' => { '$ref' => '#/definitions/UseResponse' } },
+            '400' => { 'description' => 'NotFound', 'schema' => { '$ref' => '#/definitions/ApiError' } }
+          },
+          'operationId' => 'get'
+        )
+        expect(subject['definitions']).to eql(swagger_entity_as_response_object)
       end
     end
 
-    specify do
-      expect(subject['paths']['/']['get']).to eql(
-        'summary' => 'This returns something',
-        'description' => 'This returns something',
-        'produces' => ['application/json'],
-        'responses' => {
-          '200' => { 'description' => '', 'schema' => { '$ref' => '#/definitions/UseResponse' } },
-          '400' => { 'description' => 'NotFound', 'schema' => { '$ref' => '#/definitions/ApiError' } }
-        },
-        'operationId' => 'get'
-      )
-      expect(subject['definitions']).to eql(swagger_entity_as_response_object)
+    describe 'status 宏会覆盖 desc 宏定义' do
+      before do
+        module ResponseSpec
+          module Entities
+            class Foo < Grape::Entity
+              expose :foo
+            end
+
+            class Bar < Grape::Entity
+              expose :bar
+            end
+          end
+        end
+
+        api.desc 'This returns something' do
+          success [
+            { code: 200, message: '来自 desc 宏的定义', Entity: Entities::UseResponse }
+          ]
+          failure [
+            { code: 400, message: '来自 desc 宏的定义', Entity: Entities::ApiError }
+          ]
+        end
+        api.status 200, '来自 status 宏的定义', ResponseSpec::Entities::Foo
+        api.status 400, '来自 status 宏的定义', ResponseSpec::Entities::Bar
+        api.get
+      end
+
+      specify do
+        expect(subject['paths']['/']['get']['responses']).to match({
+          '200' => {
+            'description' => a_string_matching('status'),
+            'schema' => { '$ref' => a_string_matching('Foo') }
+          },
+          '400' => {
+            'description' => a_string_matching('status'),
+            'schema' => { '$ref' => a_string_matching('Bar') }
+          }
+        })
+      end
     end
 
     describe 'status 宏会取消 desc 宏的默认定义' do

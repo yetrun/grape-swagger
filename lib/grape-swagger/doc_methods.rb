@@ -51,9 +51,8 @@ module GrapeSwagger
       )
 
       paths, definitions   = endpoint.path_and_definition_objects(combi_routes, options)
+      paths, definitions   = expand_odd_references(paths, definitions) if options[:expand_odd_references]
       tags                 = tags_from(paths, options)
-
-      paths, definitions = expand_odd_references(paths, definitions) if options[:expand_odd_references]
 
       output[:tags]        = tags unless tags.empty? || paths.blank?
       output[:paths]       = paths unless paths.blank?

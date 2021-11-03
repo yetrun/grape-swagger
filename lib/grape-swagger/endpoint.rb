@@ -212,6 +212,7 @@ module Grape
         # Explicitly request no model with { model: '' }
         next if value[:model] == ''
 
+        # 下面的代码调用之后会往 @definitions 内添加新实体
         response_model = value[:model] ? expose_params_from_model(value[:model]) : @item
         next unless @definitions[response_model]
         next if response_model.start_with?('Swagger_doc')
@@ -232,12 +233,20 @@ module Grape
       status.between?(200, 299)
     end
 
+    # 返回接口定义中的 { code, message, model } 的合集，包括 desc 宏中的定义和 status 宏中的定义
     def http_codes_from_route(route)
-      if route.http_codes.is_a?(Array) && route.http_codes.any? { |code| success_code?(code) }
-        route.http_codes.clone
-      else
-        codes_from_status(route) + success_codes_from_route(route) + (route.http_codes || route.options[:failure] || [])
+      http_codes = if route.http_codes.is_a?(Array) && route.http_codes.any? { |code| success_code?(code) }
+                     route.http_codes.clone
+                   else
+                     success_codes_from_route(route) + (route.http_codes || route.options[:failure] || [])
+                   end
+
+      # 最后，用 status 宏内的定义覆盖原定义
+      status_codes = codes_from_status(route)
+      http_codes = http_codes.reject do |http_code|
+        status_codes.any? { |status_code| status_code[:code] == http_code[:code] }
       end
+      http_codes + status_codes
     end
 
     def codes_from_status(route)
@@ -247,6 +256,8 @@ module Grape
       end
     end
 
+    # 根据 @entity 变量返回实体定义。
+    # @entity 变量可能是一个 `{ code, message, model }` 格式的数组，也可能是一个 Grape::Entity 的子类。
     def success_codes_from_route(route)
       if @entity.is_a?(Array)
         @entity.map do |entity|
@@ -426,7 +437,7 @@ module Grape
         default_code[:as] = entity[:as] if entity[:as]
         default_code[:is_array] = entity[:is_array] if entity[:is_array]
         default_code[:required] = entity[:required] if entity[:required]
-      else
+      else # entity 是 Grape::Entity
         default_code = GrapeSwagger::DocMethods::StatusCodes.get[route.request_method.downcase.to_sym]
         default_code[:model] = entity if entity
         default_code[:message] = route.description || default_code[:message].sub('{item}', @item)
