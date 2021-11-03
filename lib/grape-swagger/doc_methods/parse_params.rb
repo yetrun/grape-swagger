@@ -4,17 +4,18 @@ module GrapeSwagger
   module DocMethods
     class ParseParams
       class << self
-        def call(param, settings, path, route, definitions)
+        def call(param, settings, path, route, definitions, options = {})
           method = route.request_method
           additional_documentation = settings.fetch(:documentation, {})
           settings.merge!(additional_documentation)
           data_type = DataType.call(settings)
 
+          # vlaue_type 是 Grape 中的参数定义加上以下 merge 的字段
           value_type = settings.merge(data_type: data_type, path: path, param_name: param, method: method)
 
           # required properties
           @parsed_param = {
-            in: param_type(value_type),
+            in: param_type(value_type, options[:default_param_type]),
             name: settings[:full_name] || param
           }
 
@@ -118,14 +119,18 @@ module GrapeSwagger
           @parsed_param[:example] = example if example
         end
 
-        def param_type(value_type)
+        def param_type(value_type, default_param_type = nil)
           param_type = value_type[:param_type] || value_type[:in]
           if value_type[:path].include?("{#{value_type[:param_name]}}")
             'path'
           elsif param_type
             param_type
           elsif %w[POST PUT PATCH].include?(value_type[:method])
-            DataType.request_primitive?(value_type[:data_type]) ? 'formData' : 'body'
+            if default_param_type
+              default_param_type
+            else
+              DataType.request_primitive?(value_type[:data_type]) ? 'formData' : 'body'
+            end
           else
             'query'
           end

@@ -183,7 +183,8 @@ module Grape
         elsif value[:type]
           expose_params(value[:type])
         end
-        memo << GrapeSwagger::DocMethods::ParseParams.call(param, value, path, route, @definitions)
+        # 将参数插入到 memo 中
+        memo << GrapeSwagger::DocMethods::ParseParams.call(param, value, path, route, @definitions, options)
       end
 
       if GrapeSwagger::DocMethods::MoveParams.can_be_moved?(route.request_method, parameters)
@@ -247,13 +248,6 @@ module Grape
         status_codes.any? { |status_code| status_code[:code] == http_code[:code] }
       end
       http_codes + status_codes
-    end
-
-    def codes_from_status(route)
-      status_setting = route.settings[:status] || {}
-      status_setting.map do |code, setting|
-        { code: code, message: setting[:message] || '', model: setting[:entity] }
-      end
     end
 
     # 根据 @entity 变量返回实体定义。
@@ -444,6 +438,14 @@ module Grape
       end
 
       default_code
+    end
+
+    # 根据 status 宏定义返回响应状态码和实体定义
+    def codes_from_status(route)
+      status_setting = route.settings[:status] || {}
+      status_setting.map do |code, setting|
+        { code: code, message: setting[:message] || '', model: setting[:entity] }
+      end
     end
   end
 end
