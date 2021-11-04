@@ -95,6 +95,23 @@ describe 'response' do
       )
       expect(subject['definitions']).to eql(swagger_entity_as_response_object)
     end
+
+    describe 'status 宏会取消 desc 宏的默认定义' do
+      before do
+        entity = Class.new(Grape::Entity) do
+          expose :foo
+        end
+
+        api.desc 'This returns something'
+        api.status 201, '来自 status 宏的定义', entity
+        api.get
+      end
+
+      specify do
+        expect(subject['paths']['/']['get']['responses']).not_to have_key('200')
+        expect(subject['paths']['/']['get']['responses']).to have_key('201')
+      end
+    end
   end
 
   describe 'uses params as response object' do
@@ -118,7 +135,6 @@ describe 'response' do
           { 'in' => 'formData', 'name' => '$responses', 'type' => 'array', 'items' => { 'type' => 'string' }, 'required' => false }
         ],
         'responses' => {
-          '201' => { 'description' => 'This returns something' },
           '400' => { 'description' => 'NotFound', 'schema' => { '$ref' => '#/definitions/ApiError' } }
         },
         'operationId' => 'post'

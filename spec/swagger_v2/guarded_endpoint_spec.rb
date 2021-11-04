@@ -97,7 +97,7 @@ describe 'a guarded api endpoint' do
                 'produces' => ['application/json'],
                 'tags' => ['auth'],
                 'operationId' => 'getAuth',
-                'responses' => { '200' => { 'description' => 'Show endpoint if authenticated' } }
+                'responses' => {}
               }
             }
           }
@@ -140,7 +140,7 @@ describe 'a guarded api endpoint' do
                 'produces' => ['application/json'],
                 'tags' => ['auth'],
                 'operationId' => 'getAuth',
-                'responses' => { '200' => { 'description' => 'Show endpoint if authenticated' } }
+                'responses' => {}
               }
             }
           }

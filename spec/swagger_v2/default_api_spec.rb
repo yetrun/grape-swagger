@@ -35,7 +35,7 @@ describe 'Default API' do
               'produces' => ['application/json'],
               'tags' => ['something'],
               'operationId' => 'getSomething',
-              'responses' => { '200' => { 'description' => 'This gets something.' } }
+              'responses' => {}
             }
           }
         }
@@ -82,7 +82,7 @@ describe 'Default API' do
                                   'produces' => ['application/json'],
                                   'tags' => ['something'],
                                   'operationId' => 'getSomething',
-                                  'responses' => { '200' => { 'description' => 'This gets something.' } }
+                                  'responses' => {}
                                 }
                               }
                             })

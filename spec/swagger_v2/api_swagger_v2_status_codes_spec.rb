@@ -67,7 +67,7 @@ describe 'http status code behaviours' do
     end
 
     it 'adds the success codes to the response' do
-      expect(subject['paths']['/error_endpoint']['post']['responses'].keys.sort).to eq(%w[201 400 404].sort)
+      expect(subject['paths']['/error_endpoint']['post']['responses'].keys.sort).to eq(%w[400 404].sort)
     end
   end
 

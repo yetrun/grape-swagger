@@ -125,11 +125,7 @@ describe 'setting of param type, such as `query`, `path`, `formData`, `body`, `h
     end
 
     specify do
-      expect(subject['paths']['/defined_in/{in_path}']['delete']['responses']).to eql(
-        '204' => {
-          'description' => 'full set of request param types using `:in`'
-        }
-      )
+      expect(subject['paths']['/defined_in/{in_path}']['delete']['responses']).to eql({})
     end
   end
 

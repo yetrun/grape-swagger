@@ -232,7 +232,9 @@ RSpec.shared_context 'mock swagger example' do
               { 'in' => 'formData', 'name' => 'links', 'type' => 'array', 'items' => { 'type' => 'link' }, 'required' => false },
               { 'in' => 'query', 'name' => 'others', 'type' => 'text', 'required' => false }
             ],
-            'responses' => { '200' => { 'description' => 'This gets Things.' }, '401' => { 'description' => 'Unauthorized', 'schema' => { '$ref' => '#/definitions/ApiError' } } },
+            'responses' => {
+              '401' => { 'description' => 'Unauthorized', 'schema' => { '$ref' => '#/definitions/ApiError' } }
+            },
             'tags' => ['thing'],
             'operationId' => 'getThing'
           },
@@ -256,7 +258,10 @@ RSpec.shared_context 'mock swagger example' do
             'description' => 'This gets Thing.',
             'produces' => ['application/json'],
             'parameters' => [{ 'in' => 'path', 'name' => 'id', 'type' => 'integer', 'format' => 'int32', 'required' => true }],
-            'responses' => { '200' => { 'description' => 'getting a single thing' }, '401' => { 'description' => 'Unauthorized' } },
+            'responses' => {
+              '200' => { 'description' => 'getting a single thing' },
+              '401' => { 'description' => 'Unauthorized' } 
+            },
             'tags' => ['thing'],
             'operationId' => 'getThingId'
           },
@@ -270,7 +275,9 @@ RSpec.shared_context 'mock swagger example' do
               { 'in' => 'formData', 'name' => 'text', 'description' => 'Content of something.', 'type' => 'string', 'required' => false },
               { 'in' => 'formData', 'name' => 'links', 'type' => 'array', 'items' => { 'type' => 'string' }, 'required' => false }
             ],
-            'responses' => { '200' => { 'description' => 'This updates Thing.', 'schema' => { '$ref' => '#/definitions/Something' } } },
+            'responses' => { 
+              '200' => { 'description' => 'This updates Thing.', 'schema' => { '$ref' => '#/definitions/Something' } } 
+            },
             'tags' => ['thing'],
             'operationId' => 'putThingId'
           },
@@ -289,7 +296,10 @@ RSpec.shared_context 'mock swagger example' do
             'summary' => 'This gets Things.',
             'description' => 'This gets Things.',
             'produces' => ['application/json'],
-            'responses' => { '200' => { 'description' => 'get Horses', 'schema' => { '$ref' => '#/definitions/Something' } }, '401' => { 'description' => 'HorsesOutError', 'schema' => { '$ref' => '#/definitions/ApiError' } } },
+            'responses' => { 
+              '200' => { 'description' => 'get Horses', 'schema' => { '$ref' => '#/definitions/Something' } }, 
+              '401' => { 'description' => 'HorsesOutError', 'schema' => { '$ref' => '#/definitions/ApiError' } } 
+            },
             'tags' => ['thing2'],
             'operationId' => 'getThing2'
           }
@@ -300,7 +310,9 @@ RSpec.shared_context 'mock swagger example' do
             'description' => 'dummy route.',
             'produces' => ['application/json'],
             'parameters' => [{ 'in' => 'path', 'name' => 'id', 'type' => 'integer', 'format' => 'int32', 'required' => true }],
-            'responses' => { '204' => { 'description' => 'dummy route.' }, '401' => { 'description' => 'Unauthorized' } },
+            'responses' => { 
+              '401' => { 'description' => 'Unauthorized' } 
+            },
             'tags' => ['dummy'],
             'operationId' => 'deleteDummyId'
           }

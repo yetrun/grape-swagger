@@ -249,12 +249,14 @@ module Grape
 
     def success_codes_from_route(route)
       if @entity.is_a?(Array)
-        return @entity.map do |entity|
+        @entity.map do |entity|
           success_code_from_entity(route, entity)
         end
+      elsif @entity
+        [success_code_from_entity(route, @entity)]
+      else
+        []
       end
-
-      [success_code_from_entity(route, @entity)]
     end
 
     def tag_object(route, path)
